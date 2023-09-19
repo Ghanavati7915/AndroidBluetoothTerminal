@@ -7,7 +7,7 @@ android {
         minSdkVersion 18
         vectorDrawables.useSupportLibrary true
 
-        applicationId "de.kai_morich.simple_bluetooth_terminal"
+        applicationId "ir.cap.pw9432"
         versionCode 1
         versionName "1.0"
     }
@@ -21,7 +21,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    namespace 'de.kai_morich.simple_bluetooth_terminal'
+    namespace 'ir.cap.pw9432'
     ndkVersion '25.2.9519653'
     buildToolsVersion '33.0.2'
     buildFeatures {
