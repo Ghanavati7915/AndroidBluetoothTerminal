@@ -15,7 +15,19 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" />
+            android:background="?attr/colorPrimary"
+            android:layoutDirection="rtl"
+            android:textDirection="anyRtl" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/estedadlight"
+            android:paddingEnd="10dp"
+            android:text="نسخه  "
+            android:textAlignment="center"
+            android:textSize="10sp" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

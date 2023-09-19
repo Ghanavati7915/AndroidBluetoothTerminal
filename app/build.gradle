@@ -22,9 +22,15 @@ android {
         }
     }
     namespace 'de.kai_morich.simple_bluetooth_terminal'
+    ndkVersion '25.2.9519653'
+    buildToolsVersion '33.0.2'
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.squareup.okhttp:okhttp:2.5.0'
 }

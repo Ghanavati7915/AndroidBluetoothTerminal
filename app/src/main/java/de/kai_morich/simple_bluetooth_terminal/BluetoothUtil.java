@@ -13,6 +13,7 @@ import android.os.Build;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.fragment.app.Fragment;
 
+
 public class BluetoothUtil {
 
     interface PermissionGrantedCallback {

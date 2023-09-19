@@ -101,7 +101,7 @@ public class SerialService extends Service implements SerialListener {
         socket.write(data);
     }
 
-    public void attach(SerialListener listener) {
+    public void attach(SerialListener listener) throws InterruptedException {
         if(Looper.getMainLooper().getThread() != Thread.currentThread())
             throw new IllegalArgumentException("not in main thread");
         cancelNotification();
@@ -182,7 +182,11 @@ public class SerialService extends Service implements SerialListener {
                 if (listener != null) {
                     mainLooper.post(() -> {
                         if (listener != null) {
-                            listener.onSerialConnect();
+                            try {
+                                listener.onSerialConnect();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
                         } else {
                             queue1.add(new QueueItem(QueueType.Connect));
                         }

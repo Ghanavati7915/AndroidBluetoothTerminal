@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Simple Bluetooth Terminal</string>
-    <string name="devices">Bluetooth Devices</string>
+    <string name="app_name">PW-9432</string>
+    <string name="devices">دستگاه ها</string>
 
-    <string name="bluetooth_permission_title">Bluetooth permission</string>
-    <string name="bluetooth_permission_grant">Bluetooth permission is required by this App. Please grant in next dialog.</string>
-    <string name="bluetooth_permission_denied">Bluetooth permission was permanently denied. You have to enable permission \"%s\" in App settings.</string>
+    <string name="bluetooth_permission_title">دسترسی به بلوتوث</string>
+    <string name="bluetooth_permission_grant">دسترسی به امکان بلوتوث نیاز است ، لطفا دسترسی را تایید نمایید</string>
+    <string name="bluetooth_permission_denied">دسترسی به بلوتوث رد شد . شما باید دسترسی به این امکان را تایید نمایید . \"%s\"</string>
 </resources>

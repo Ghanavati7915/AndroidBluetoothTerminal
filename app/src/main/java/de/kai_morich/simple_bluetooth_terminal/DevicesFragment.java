@@ -1,21 +1,32 @@
 package de.kai_morich.simple_bluetooth_terminal;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -59,6 +70,11 @@ public class DevicesFragment extends ListFragment {
         requestBluetoothPermissionLauncherForRefresh = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 granted -> BluetoothUtil.onPermissionsResult(this, granted, this::refresh));
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String myUser = sharedPreferences.getString("user", "Unknown");
+        if (myUser.equals("Unknown")) registerUser();
+        else helpUser();
     }
 
     @Override
@@ -122,13 +138,13 @@ public class DevicesFragment extends ListFragment {
             }
         }
         if(bluetoothAdapter == null)
-            setEmptyText("<bluetooth not supported>");
+            setEmptyText("بلوتوث پشتیبانی نمی شود");
         else if(!bluetoothAdapter.isEnabled())
-            setEmptyText("<bluetooth is disabled>");
+            setEmptyText(" بلوتوث را فعال کنید ");
         else if(permissionMissing)
-            setEmptyText("<permission missing, use REFRESH>");
+            setEmptyText("دسترسی ندارید ، لطفا به روز رسانی کنید");
         else
-            setEmptyText("<no bluetooth devices found>");
+            setEmptyText("دستگاه بلوتوث یافت نشد");
         listAdapter.notifyDataSetChanged();
     }
 
@@ -141,4 +157,68 @@ public class DevicesFragment extends ListFragment {
         fragment.setArguments(args);
         getParentFragmentManager().beginTransaction().replace(R.id.fragment, fragment, "terminal").addToBackStack(null).commit();
     }
+
+    private void registerUser(){
+        EditText input;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("شماره تلفن همراه");
+        builder.setMessage("کاربر گرامی لطفا شماره تلفن همراه خود را وارد کنید.");
+        input = new EditText(getActivity());
+        builder.setView(input);
+        builder.setPositiveButton("تایید", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String txt = input.getText().toString();
+
+                if (txt.equals("")){
+                    Toast.makeText(getActivity(), "اطلاعات را وارد کنید", Toast.LENGTH_SHORT).show();
+                    registerUser();
+                }else{
+                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("user", txt);
+                    editor.apply();
+                    helpUser();
+                }
+
+            }
+        });
+        builder.setNegativeButton("لغو", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getActivity(), "اطلاعات را وارد کنید", Toast.LENGTH_SHORT).show();
+                registerUser();
+            }
+        });
+        AlertDialog ad = builder.create();
+        ad.setCanceledOnTouchOutside(false);
+        ad.show();
+    }
+
+    private void helpUser(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("راهنمای کاربران");
+        builder.setMessage("لطفا دستورالعمل استفاده از برنامه و راه اندازی سخت افزار را از طریق لینک زیر مطالعه نمایید");
+        builder.setPositiveButton("نمایش راهنما", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Open the link
+                String url = "https://wiki.betezadi.ir/b/323";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("لغو", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog ad = builder.create();
+        ad.setCanceledOnTouchOutside(false);
+        ad.show();
+    }
+
+
 }
