@@ -391,7 +391,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
     }
 
     private void receive(ArrayDeque<byte[]> datas) {
-
+        try {
         layout_display.setVisibility(View.VISIBLE);
         layout_loading.setVisibility(View.GONE);
 
@@ -423,10 +423,14 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
         }
 
         receiveText.append(spn);
-
+        } catch (Exception e) {
+            onSerialIoError(e);
+            Toast.makeText(getActivity(), "مشکلی در ترجمه اطلاعات رخ داده است", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setOnScreen(CharSequence msgData){
+        try {
         SpannableStringBuilder spn = new SpannableStringBuilder();
         spn.append(msgData);
         String msg = spn.toString();
@@ -640,7 +644,7 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
         if (ParamsCounter == 23 && !CallGPS)
         {
             CallGPS = true;
-            setTimeout(this::callGPSStatus, 2000);
+            setTimeout(this::callGPSStatus, 4000);
         }
         if (ParamsCounter == 30 && !CallPINGCloud) {
             CallPINGCloud = true;
@@ -650,6 +654,10 @@ public class TerminalFragment extends Fragment implements ServiceConnection, Ser
                 throw new RuntimeException(e);
             }
         }
+    } catch (Exception e) {
+        onSerialIoError(e);
+        Toast.makeText(getActivity(), "مشکلی در ترجمه اطلاعات رخ داده است", Toast.LENGTH_SHORT).show();
+    }
     }
 
     private void status(String str) {

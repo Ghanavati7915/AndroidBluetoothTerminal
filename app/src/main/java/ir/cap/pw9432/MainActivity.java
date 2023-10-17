@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String myUser = sharedPreferences.getString("user", "Unknown");
-        String version = "نسخه 1.0";
+        String version = "نسخه 1.1";
         if (!myUser.equals("Unknown")) version += "  -  " + myUser;
         TextView tv_version = findViewById(R.id.textView);
         tv_version.setText(version);
